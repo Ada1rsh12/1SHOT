@@ -143,27 +143,7 @@ bot.on('message', async message => {
         if (message.author.bot || (!hasText && !hasImage && !hasEmbed)) return;
         const origin = bot.phone.find(call => call.origin.id === message.channel.id);
         const recipient = bot.phone.find(call => call.recipient.id === message.channel.id);
-        if (!origin && !recipient) return;
-        const call = origin || recipient;
-        if (!call.active) return;
-        await call.send(origin ? call.recipient : call.origin, message, hasText, hasImage, hasEmbed);
-    } catch {
-        return;
-    };
-});
-
-bot.on('guildMemberAdd', async member => {
-
-    let wChan = db.fetch(`welcome_${member.guild.id}`)
-
-    if (wChan == null) return;
-
-    if (!wChan) return;
-
-    let font64 = await jimp.loadFont(jimp.FONT_SANS_64_WHITE)
-    let bfont64 = await jimp.loadFont(jimp.FONT_SANS_64_BLACK)
-    let mask = await jimp.read('https://i.imgur.com/552kzaW.png')
-    let welcome = await jimp.read('https://t.wallpaperweb.org/wallpaper/nature/1920x1080/greenroad1920x1080wallpaper3774.jpg')
+        i
 
     jimp.read(member.user.displayAvatarURL({ format: 'png' })).then(avatar => {
         avatar.resize(200, 200)
@@ -171,12 +151,11 @@ bot.on('guildMemberAdd', async member => {
         avatar.mask(mask)
         welcome.resize(1000, 300)
 
-        welcome.print(font64, 265, 55, `Welcome ${member.user.username}`)
-        welcome.print(bfont64, 265, 125, `To ${member.guild.name}`)
-        welcome.print(font64, 265, 195, `There are now ${member.guild.memberCount} users`)
-        welcome.composite(avatar, 40, 55).write('Welcome2.png')
+        welcome.say `Welcome ${member.user.username}`)
+        welcome.say `To ${member.guild.name}`)
+        welcome.type `There are now ${member.guild.memberCount} users`
         try {
-            member.guild.channels.cache.get(wChan).send(``, { files: ["Welcome2.png"] })
+            member.guild.channels.cache.get(wChan).send(``, { files: ["type"] })
         } catch (e) {
           
         }
